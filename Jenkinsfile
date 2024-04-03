@@ -34,49 +34,14 @@ pipeline {
     }
     //build
     stages {
-        stage('Deploy') {
+        stage('print version') {
             steps {
                sh """
                   echo "version: ${params.version}"
                """
             }
         }
-        stage('install dependencies') {
-            steps {
-               sh """
-                   npm install
-               """
-            }
-        }
-        stage('Build') {
-            steps {
-                sh """
-                    ls -la
-                    zip -q -r catalogue.zip ./* -x ".git" -x ".zip"
-                    ls -ltr
-                """
-            }
-        }
-        stage('Public artifact') {
-            steps {
-                nexusArtifactUploader(
-                    nexusVersion: 'nexus3',
-                    protocol: 'http',
-                    nexusUrl: "${nexusURL}",
-                    groupId: 'com.roboshop',
-                    version: "${packageVersion}",
-                    repository: 'catalogue',
-                    credentialsId: 'nexus-auth',
-                    artifacts: [
-                        [artifactId: 'catalogue',
-                        classifier: '',
-                        file: 'catalogue.zip',
-                        type: 'zip']
-                    ]
-                )
-            }
-        }
-    }
+    } 
     //post build
     post {
         always {
