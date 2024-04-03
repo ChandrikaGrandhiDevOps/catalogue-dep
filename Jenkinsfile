@@ -76,13 +76,6 @@ pipeline {
                 )
             }
         }
-        stage('Deploy') {
-            steps {
-                sh """
-                    echo 'Here i wrote shell script'
-                """
-            }
-        }
     }
     //post build
     post {
